@@ -16,7 +16,6 @@
         "php": "^7.3"
     },
     "require-dev": {
-        "badoo/soft-mocks": "^3.0",
         "phpunit/phpunit": "^7.5"
     },
     "config": {
