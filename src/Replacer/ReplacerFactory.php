@@ -50,8 +50,8 @@ final class ReplacerFactory
         $last_replacer = array_pop($replacer_candidates);
         $message_replacers = $replacer_candidates
             ? implode(', ', $replacer_candidates) . "or {$last_replacer}"
-            : $last_replacer;
+            : $last_replacer ?? 'uopz or runkit7';
 
-        throw new LogicException("None of the Replacers are installed. Please install {$message_replacers}");
+        throw new LogicException("None of the Replacers are installed. Please install {$message_replacers}.");
     }
 }
