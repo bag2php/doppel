@@ -1,0 +1,27 @@
+{
+    "name": "bag2/staticdouble",
+    "description": "Test double implementation for static methods",
+    "license": "MPL-2.0",
+    "autoload": {
+        "psr-4": {
+            "Bag2\\StaticDouble\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bag2\\StaticDouble\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.3"
+    },
+    "require-dev": {
+        "badoo/soft-mocks": "^3.0",
+        "phpunit/phpunit": "^7.5"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "secure-http": false,
+        "sort-packages": true
+    }
+}
