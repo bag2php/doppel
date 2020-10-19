@@ -1,0 +1,10 @@
+/.php_cs.cache
+/.phpdoc
+/build/
+/cache/
+/composer.lock
+/docs/api/
+/tools/*.phar
+/tools/*/composer.lock
+/tools/*/vendor/
+/vendor/
