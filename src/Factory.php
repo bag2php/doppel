@@ -16,6 +16,7 @@ use Bag2\StaticDouble\Replacer\ReplacerFactory;
 class Factory
 {
     private const REPLACER_CANDIDATES = [
+        Replacer\Runkit7::class,
         Replacer\Uopz::class,
     ];
 
