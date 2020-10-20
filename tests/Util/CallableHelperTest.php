@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Bag2\StaticDouble\Util;
 
 use Bag2\StaticDouble\TestCase;
-use Bag2\StaticDouble\Util\CallableTrait;
+use Bag2\StaticDouble\Util\CallableHelper;
 use LogicException;
 
 final class Runkit7Test extends TestCase
 {
-    use CallableTrait;
+    use CallableHelper;
 
     /**
      * @dataProvider stashMethodNameProvider
@@ -25,7 +25,7 @@ final class Runkit7Test extends TestCase
      */
     public function stashMethodNameProvider(): array
     {
-        $prefix = CallableTrait::class;
+        $prefix = CallableHelper::class;
 
         return [
             ["{$prefix}\0Book\0all\0", 'Book', 'all'],

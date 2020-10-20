@@ -16,7 +16,7 @@ use LogicException;
  * @copyright 2020 Baguette HQ
  * @license https://www.mozilla.org/en-US/MPL/2.0/ MPL-2.0
  */
-trait CallableTrait
+trait CallableHelper
 {
     /**
      * Extract class-name and method-name from callable value.

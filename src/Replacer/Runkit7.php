@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bag2\StaticDouble\Replacer;
 
 use Bag2\StaticDouble\Replacer;
-use Bag2\StaticDouble\Util\CallableTrait;
+use Bag2\StaticDouble\Util\CallableHelper;
 use Closure;
 use function extension_loaded;
 use function runkit7_function_add;
@@ -27,7 +27,7 @@ use function runkit7_method_rename;
  */
 class Runkit7 implements Replacer
 {
-    use CallableTrait;
+    use CallableHelper;
 
     public function __construct()
     {

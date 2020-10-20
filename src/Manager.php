@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bag2\StaticDouble;
 
-use Bag2\StaticDouble\Util\CallableTrait;
+use Bag2\StaticDouble\Util\CallableHelper;
 use function debug_backtrace;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use Generator;
@@ -18,7 +18,7 @@ use Generator;
  */
 class Manager
 {
-    use CallableTrait;
+    use CallableHelper;
 
     /** @var bool */
     private $finalized = false;

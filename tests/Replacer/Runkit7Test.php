@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Bag2\StaticDouble\Replacer;
 
 use Bag2\StaticDouble\TestCase;
-use Bag2\StaticDouble\Util\CallableTrait;
+use Bag2\StaticDouble\Util\CallableHelper;
 use LogicException;
 
 final class Runkit7Test extends TestCase
 {
-    use CallableTrait;
+    use CallableHelper;
 
     /** @var Runkit7 */
     private $subject;
