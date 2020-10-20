@@ -39,4 +39,12 @@ trait CallableTrait
 
         throw new LogicException('$callback is not expected callable format.');
     }
+
+    /**
+     * Generate a new function name for method stashing that includes backslash(\\) and null(\0)
+     */
+    protected static function stashMethodName(string $class_name, string $func_name): string
+    {
+        return __TRAIT__ . "\0{$class_name}\0{$func_name}\0";
+    }
 }
