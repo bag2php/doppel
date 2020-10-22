@@ -49,7 +49,7 @@ class TestDouble
          * @param mixed ...$args
          * @return mixed
          */
-        $implementation = function (...$args) use ($test_double) {
+        $implementation = static function (...$args) use ($test_double) {
             return $test_double->invokeImplementation($args);
         };
         $replacer->register($class_name, $method_name, $implementation);
