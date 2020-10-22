@@ -22,7 +22,7 @@ class TestDouble
     private $class_name;
 
     /** @var bool */
-    private $enabled_spy;
+    private $disable_spy;
 
     /** @var string */
     private $method_name;
@@ -34,14 +34,14 @@ class TestDouble
     private $return_value;
 
     /**
-     * @param array{backtrace?: array{line:int, file:string}, enabled_spy?:bool} $options
+     * @param array{backtrace?: array{line:int, file:string}, disable_spy?:bool} $options
      */
     final private function __construct(?string $class_name, string $method_name, Replacer $replacer, array $options)
     {
         $this->class_name = $class_name;
         $this->method_name = $method_name;
         $this->backtrace = $options['backtrace'] ?? null;
-        $this->enabled_spy = $options['enabled_spy'] ?? true;
+        $this->disable_spy = $options['disable_spy'] ?? false;
 
         $test_double = $this;
 
@@ -92,7 +92,7 @@ class TestDouble
      */
     public function invokeImplementation(array $args)
     {
-        if ($this->enabled_spy) {
+        if (!$this->disable_spy) {
             $this->received_args[] = $args;
         }
 
