@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble\Util;
+namespace Bag2\Doppel\Util;
 
 use function explode;
 use function is_array;

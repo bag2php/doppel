@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble\Replacer;
+namespace Bag2\Doppel\Replacer;
 
 use function array_pop;
-use Bag2\StaticDouble\Replacer;
+use Bag2\Doppel\Replacer;
 use function implode;
 use LogicException;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble;
+namespace Bag2\Doppel;
 
 use LogicException;
 

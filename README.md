@@ -1,7 +1,7 @@
-# Bag2\StaticDouble
+# Bag2\Doppel
 
 
-**StaticDouble** is a PHP mocking framework for static methods.
+**Doppel** is a PHP mocking framework for static methods.
 
 ## Example
 
@@ -16,12 +16,12 @@ class Vehicle {
 
 echo Vehicle::horn(), PHP_EOL; // Beep!
 
-$static_double_manager = (new Bag2\StaticDouble\Factory)->create();
-$static_double_manager->add('Vehicle::horn')->andReturn('Boo!');
+$doppel = (new Bag2\Doppel\Factory)->create();
+$doppel->add('Vehicle::horn')->andReturn('Boo!');
 
 echo Vehicle::horn(), PHP_EOL; // Boo!
 
-$static_double_manager->finalize();
+$doppel->finalize();
 
 echo Vehicle::horn(), PHP_EOL; // Beep!
 ```

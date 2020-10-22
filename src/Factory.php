@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble;
+namespace Bag2\Doppel;
 
-use Bag2\StaticDouble\Replacer\ReplacerFactory;
+use Bag2\Doppel\Replacer\ReplacerFactory;
 
 /**
  * A factory class of Static TestDouble manager

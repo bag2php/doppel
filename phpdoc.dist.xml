@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://www.phpdoc.org"
     xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd">
-  <title>Bag2&#x5C;StaticDouble</title>
+  <title>Bag2&#x5C;Doppel</title>
   <paths>
     <output>docs/api</output>
   </paths>
@@ -24,7 +24,7 @@
       <extensions>
         <extension>php</extension>
       </extensions>
-      <default-package-name>Bag2&#x5C;StaticDouble</default-package-name>
+      <default-package-name>Bag2&#x5C;Doppel</default-package-name>
     </api>
     <guide>
       <source dsn=".">

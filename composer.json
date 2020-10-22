@@ -1,15 +1,15 @@
 {
-    "name": "bag2/staticdouble",
+    "name": "bag2/doppel",
     "description": "Test double implementation for static methods",
     "license": "MPL-2.0",
     "autoload": {
         "psr-4": {
-            "Bag2\\StaticDouble\\": "src/"
+            "Bag2\\Doppel\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Bag2\\StaticDouble\\": "tests/"
+            "Bag2\\Doppel\\": "tests/"
         }
     },
     "require": {
