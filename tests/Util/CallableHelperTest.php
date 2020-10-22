@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble\Util;
+namespace Bag2\Doppel\Util;
 
-use Bag2\StaticDouble\TestCase;
-use Bag2\StaticDouble\Util\CallableHelper;
+use Bag2\Doppel\TestCase;
+use Bag2\Doppel\Util\CallableHelper;
 use LogicException;
 
 final class Runkit7Test extends TestCase

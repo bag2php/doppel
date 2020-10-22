@@ -8,7 +8,7 @@
     colors="true"
     verbose="false">
   <testsuites>
-    <testsuite name="Bag2\StaticDouble">
+    <testsuite name="Bag2\Doppel">
       <directory>tests/</directory>
       <exclude>tests/files/</exclude>
     </testsuite>

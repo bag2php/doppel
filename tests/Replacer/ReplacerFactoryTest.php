@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble\Replacer;
+namespace Bag2\Doppel\Replacer;
 
-use Bag2\StaticDouble\TestCase;
+use Bag2\Doppel\TestCase;
 use LogicException;
 
 final class ReplacerFactoryTest extends TestCase

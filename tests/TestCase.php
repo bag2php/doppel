@@ -1,11 +1,11 @@
 <?php
 
-namespace Bag2\StaticDouble;
+namespace Bag2\Doppel;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 /**
- * Base TestCase for Bag2\StaticDouble
+ * Base TestCase for Bag2\Doppel
  *
  * @author USAMI Kenta <tadsan@zonu.me>
  * @copyright 2020 Baguette HQ

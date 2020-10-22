@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bag2\StaticDouble;
+namespace Bag2\Doppel;
 
-use Bag2\StaticDouble\Util\CallableHelper;
+use Bag2\Doppel\Util\CallableHelper;
 use function debug_backtrace;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use Generator;
