@@ -24,6 +24,7 @@ $config = PhpCsFixer\Config::create()
         'elseif' => true,
         'function_typehint_space' => true,
         'global_namespace_import' => [
+            'import_constants' => true,
             'import_functions' => true,
         ],
         'hash_to_slash_comment' => true,
