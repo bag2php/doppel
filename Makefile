@@ -29,7 +29,7 @@ RM = rm -f
 APP_ENV =
 PHPDOCUMENTOR_PHAR_URL = https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.0.0-rc/phpDocumentor.phar
 
-.DEFAULT_GOAL := $(AUTOLOAD_PHP)
+.DEFAULT_GOAL := check
 
 $(COMPOSER):
 	tools/setup-composer
@@ -70,10 +70,11 @@ tools/phpstan: tools/.phpstan/vendor/bin/phpstan
 tools/psalm: tools/.psalm/vendor/bin/psalm
 	(cd tools; ln -sf .psalm/vendor/bin/psalm .)
 
-.PHONY: analyse composer composer-no-dev clean clobber doc fix phan phpdoc phpstan-no-dev phpstan psalm setup setup-tools test
+.PHONY: analyse analyse-no-dev check composer composer-no-dev clean clobber doc fix phan phpdoc phpstan-no-dev phpstan psalm setup setup-tools test
 
 analyse-no-dev: phan phpstan-no-dev psalm-no-dev
-analyse: phan phpstan psalm 
+analyse: phan phpstan psalm
+check: composer test analyse
 
 composer: $(AUTOLOAD_PHP)
 
