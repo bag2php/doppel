@@ -8,6 +8,7 @@ use Bag2\Doppel\Util\CallableHelper;
 use function debug_backtrace;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use Generator;
+use LogicException;
 
 /**
  * Manager and Factory class of TestDouble
@@ -54,6 +55,12 @@ class Manager
 
         [$class_name, $method_name] = $class_method = static::extractClassMethod($method);
         $test_double = TestDouble::fromClassMethod($class_method, $this->replacer, $options);
+
+        if (isset($this->test_doubles[$class_name ?? ''][$method_name])) {
+            $name = ($class_name === null) ? $method_name : "{$class_name}::{$method_name}";
+            throw new LogicException("Already set \\{$name}(). Do not add it multiple times.");
+        }
+
         $this->test_doubles[$class_name ?? ''][$method_name] = $test_double;
 
         return $test_double;
