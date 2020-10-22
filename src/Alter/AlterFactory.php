@@ -15,6 +15,8 @@ use Closure;
  */
 interface AlterFactory
 {
+    public function fromClosure(Closure $closure): ClosureAlter;
+
     /**
      * @phpstan-template T
      * @param mixed $value

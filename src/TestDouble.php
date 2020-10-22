@@ -6,6 +6,7 @@ namespace Bag2\Doppel;
 
 use Bag2\Doppel\Alter;
 use Bag2\Doppel\Alter\AlterFactory;
+use Closure;
 use LogicException;
 
 /**
@@ -108,13 +109,17 @@ class TestDouble
     /**
      * Defines the behavior of a function/method
      *
-     * @param Alter $alter
+     * @param Alter|Closure $alter
      * @return $this
      */
     public function will($alter)
     {
-        if (isset($this->alter)) {
+        if ($this->alter !== null) {
             throw new LogicException('Already set Alter.  will() cannot be set multiple times.');
+        }
+
+        if ($alter instanceof Closure) {
+            $alter = $this->alter_factory->fromClosure($alter);
         }
 
         $this->alter = $alter;
