@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel;
 
+use Bag2\Doppel\Alter;
+use Bag2\Doppel\Alter\AlterFactory;
 use LogicException;
 
 /**
@@ -15,6 +17,12 @@ use LogicException;
  */
 class TestDouble
 {
+    /** @var Alter */
+    private $alter;
+
+    /** @var AlterFactory */
+    private $alter_factory;
+
     /** @var ?array{line:int, file:string} */
     private $backtrace;
 
@@ -30,16 +38,14 @@ class TestDouble
     /** @var array<int,array<int,mixed>> */
     private $received_args = [];
 
-    /** @var ?array{value:mixed} */
-    private $return_value;
-
     /**
-     * @param array{backtrace?: array{line:int, file:string}, disable_spy?:bool} $options
+     * @param array{alter_factory?:AlterFactory, backtrace?: array{line:int, file:string}, disable_spy?:bool} $options
      */
     final private function __construct(?string $class_name, string $method_name, Replacer $replacer, array $options)
     {
         $this->class_name = $class_name;
         $this->method_name = $method_name;
+        $this->alter_factory = $options['alter_factory'] ?? new Alter\DefaultFactory;
         $this->backtrace = $options['backtrace'] ?? null;
         $this->disable_spy = $options['disable_spy'] ?? false;
 
@@ -73,7 +79,7 @@ class TestDouble
      */
     public function andReturn($value)
     {
-        $this->return_value = ['value' => $value];
+        $this->will($this->alter_factory->fromFixedReturnValue($value));
 
         return $this;
     }
@@ -96,10 +102,23 @@ class TestDouble
             $this->received_args[] = $args;
         }
 
-        if ($this->return_value) {
-            return $this->return_value['value'];
+        return $this->alter->invoke($args);
+    }
+
+    /**
+     * Defines the behavior of a function/method
+     *
+     * @param Alter $alter
+     * @return $this
+     */
+    public function will($alter)
+    {
+        if (isset($this->alter)) {
+            throw new LogicException('Already set Alter.  will() cannot be set multiple times.');
         }
 
-        throw new LogicException();
+        $this->alter = $alter;
+
+        return $this;
     }
 }
