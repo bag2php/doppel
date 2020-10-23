@@ -27,11 +27,20 @@ class Doppel
     /** @var ?array{line:int, file:string} */
     private $backtrace;
 
+    /** @var int */
+    private $called_count = 0;
+
     /** @var ?string */
     private $class_name;
 
     /** @var bool */
     private $enable_record;
+
+    /** @var bool */
+    private $enable_throw_on_runtime;
+
+    /** @var ?int */
+    private $expected_called_count;
 
     /** @var string */
     private $method_name;
@@ -48,6 +57,7 @@ class Doppel
         $this->method_name = $method_name;
         $this->alter_factory = $options['alter_factory'] ?? new Alter\DefaultFactory;
         $this->backtrace = $options['backtrace'] ?? null;
+        $this->enable_throw_on_runtime = $options['enable_throw_on_runtime'] ?? true;
         $this->enable_record = $options['enable_record'] ?? true;
 
         $test_double = $this;
@@ -99,11 +109,64 @@ class Doppel
      */
     public function invokeImplementation(array $args)
     {
+        $this->called_count++;
         if ($this->enable_record) {
             $this->received_args[] = $args;
         }
 
+        if (isset($this->expected_called_count) &&
+            $this->enable_throw_on_runtime &&
+            $this->expected_called_count < $this->called_count
+        ) {
+            $func_name = $this->class_name === null
+                ? $this->method_name
+                : "{$this->class_name}::{$this->method_name}";
+
+            throw new UnexpectedMethodCallException(
+                UnexpectedMethodCallException::generateMessageForCalledCount(
+                    $func_name,
+                    $this->expected_called_count,
+                    $this->called_count
+                )
+            );
+        }
+
         return $this->alter->invoke($args);
+    }
+
+    /**
+     * @return $this
+     */
+    public function never()
+    {
+        return $this->times(0);
+    }
+
+    /**
+     * @return $this
+     */
+    public function once()
+    {
+        return $this->times(1);
+    }
+
+    /**
+     * @return $this
+     */
+    public function times(int $n)
+    {
+        assert($n >= 0);
+        $this->expected_called_count = $n;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function twice()
+    {
+        return $this->times(2);
     }
 
     /**
