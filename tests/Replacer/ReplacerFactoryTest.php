@@ -9,6 +9,14 @@ use LogicException;
 
 final class ReplacerFactoryTest extends TestCase
 {
+    public function test(): void
+    {
+        $subject = new ReplacerFactory([DummyReplacer::class]);
+        $actual = $subject->create();
+
+        $this->assertInstanceOf(DummyReplacer::class, $actual);
+    }
+
     /**
      * @test
      */
