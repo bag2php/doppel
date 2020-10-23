@@ -102,7 +102,7 @@ class Manager implements ArrayAccess
     {
         [$class_name, $method_name] = static::extractClassMethod($offset);
 
-        return isset($this->doppels[$class_name][$method_name]);
+        return isset($this->doppels[$class_name ?? ''][$method_name]);
     }
 
     /**
@@ -113,7 +113,7 @@ class Manager implements ArrayAccess
     {
         [$class_name, $method_name] = static::extractClassMethod($offset);
 
-        return $this->doppels[$class_name][$method_name];
+        return $this->doppels[$class_name ?? ''][$method_name];
     }
 
     /**
