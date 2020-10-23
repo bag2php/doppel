@@ -31,7 +31,7 @@ class Doppel
     private $class_name;
 
     /** @var bool */
-    private $disable_spy;
+    private $enable_record;
 
     /** @var string */
     private $method_name;
@@ -40,7 +40,7 @@ class Doppel
     private $received_args = [];
 
     /**
-     * @param array{alter_factory?:AlterFactory, backtrace?: array{line:int, file:string}, disable_spy?:bool} $options
+     * @param array{alter_factory?:AlterFactory, backtrace?: array{line:int, file:string}, enable_record?:bool} $options
      */
     final private function __construct(?string $class_name, string $method_name, Replacer $replacer, array $options)
     {
@@ -48,7 +48,7 @@ class Doppel
         $this->method_name = $method_name;
         $this->alter_factory = $options['alter_factory'] ?? new Alter\DefaultFactory;
         $this->backtrace = $options['backtrace'] ?? null;
-        $this->disable_spy = $options['disable_spy'] ?? false;
+        $this->enable_record = $options['enable_record'] ?? true;
 
         $test_double = $this;
 
@@ -99,7 +99,7 @@ class Doppel
      */
     public function invokeImplementation(array $args)
     {
-        if (!$this->disable_spy) {
+        if ($this->enable_record) {
             $this->received_args[] = $args;
         }
 

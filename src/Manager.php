@@ -47,7 +47,7 @@ class Manager implements ArrayAccess
     /**
      * Create a test-double
      *
-     * @param array{backtrace?: array{line:int, file:string}, enabled_spy?:bool} $options
+     * @param array{backtrace?: array{line:int, file:string}, enabled_record?:bool} $options
      */
     public function add(callable $method, array $options = []): Doppel
     {
