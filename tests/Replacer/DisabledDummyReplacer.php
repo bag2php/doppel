@@ -14,7 +14,7 @@ use Closure;
  * @copyright 2020 Baguette HQ
  * @license https://www.mozilla.org/en-US/MPL/2.0/ MPL-2.0
  */
-final class DummyReplacer implements Replacer
+final class DisabledDummyReplacer implements Replacer
 {
     public function __construct()
     {
@@ -42,6 +42,6 @@ final class DummyReplacer implements Replacer
      */
     public static function enabled(): bool
     {
-        return true;
+        return false;
     }
 }
