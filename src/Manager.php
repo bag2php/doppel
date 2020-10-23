@@ -27,8 +27,8 @@ class Manager
     /** @var Replacer */
     private $replacer;
 
-    /** @var array<string,array<string,TestDouble>> */
-    private $test_doubles = [];
+    /** @var array<string,array<string,Doppel>> */
+    private $doppels = [];
 
     public function __construct(Replacer $replacer)
     {
@@ -45,7 +45,7 @@ class Manager
      *
      * @param array{backtrace?: array{line:int, file:string}, enabled_spy?:bool} $options
      */
-    public function add(callable $method, array $options = []): TestDouble
+    public function add(callable $method, array $options = []): Doppel
     {
         if (!isset($options['backtrace'])) {
             /** @var array{line:int, file:string} */
@@ -54,24 +54,24 @@ class Manager
         }
 
         [$class_name, $method_name] = $class_method = static::extractClassMethod($method);
-        $test_double = TestDouble::fromClassMethod($class_method, $this->replacer, $options);
+        $test_double = Doppel::fromClassMethod($class_method, $this->replacer, $options);
 
-        if (isset($this->test_doubles[$class_name ?? ''][$method_name])) {
+        if (isset($this->doppels[$class_name ?? ''][$method_name])) {
             $name = ($class_name === null) ? $method_name : "{$class_name}::{$method_name}";
             throw new LogicException("Already set \\{$name}(). Do not add it multiple times.");
         }
 
-        $this->test_doubles[$class_name ?? ''][$method_name] = $test_double;
+        $this->doppels[$class_name ?? ''][$method_name] = $test_double;
 
         return $test_double;
     }
 
     /**
-     * @return Generator<TestDouble>
+     * @return Generator<Doppel>
      */
-    public function getTestDoubles(): Generator
+    public function getDoppels(): Generator
     {
-        foreach ($this->test_doubles as $class => $methods) {
+        foreach ($this->doppels as $class => $methods) {
             foreach ($methods as $method => $test_double) {
                 yield $test_double;
             }
@@ -83,7 +83,7 @@ class Manager
      */
     public function finalize(): void
     {
-        foreach ($this->getTestDoubles() as $test_double) {
+        foreach ($this->getDoppels() as $test_double) {
             $this->replacer->restore(...$test_double->asClassMethod());
         }
 
