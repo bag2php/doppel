@@ -15,7 +15,7 @@ use Closure;
  */
 interface AlterFactory
 {
-    public function fromClosure(Closure $closure): ClosureAlter;
+    public function createFromClosure(Closure $closure): ClosureAlter;
 
     /**
      * @phpstan-template T
@@ -23,5 +23,5 @@ interface AlterFactory
      * @phpstan-param T $value
      * @phpstan-return ReturnValueAlter<T>
      */
-    public function fromFixedReturnValue($value): ReturnValueAlter;
+    public function createFromFixedReturnValue($value): ReturnValueAlter;
 }

@@ -15,7 +15,7 @@ use Closure;
  */
 class DefaultFactory implements AlterFactory
 {
-    public function fromClosure(Closure $closure): ClosureAlter
+    public function createFromClosure(Closure $closure): ClosureAlter
     {
         return new ClosureAlter($closure);
     }
@@ -26,7 +26,7 @@ class DefaultFactory implements AlterFactory
      * @phpstan-param T $value
      * @phpstan-return ReturnValueAlter<T>
      */
-    public function fromFixedReturnValue($value): ReturnValueAlter
+    public function createFromFixedReturnValue($value): ReturnValueAlter
     {
         return new ReturnValueAlter(ReturnValueAlter::TYPE_FIXED, [$value]);
     }

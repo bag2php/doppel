@@ -90,7 +90,7 @@ class Doppel
      */
     public function andReturn($value)
     {
-        $this->will($this->alter_factory->fromFixedReturnValue($value));
+        $this->will($this->alter_factory->createFromFixedReturnValue($value));
 
         return $this;
     }
@@ -182,7 +182,7 @@ class Doppel
         }
 
         if ($alter instanceof Closure) {
-            $alter = $this->alter_factory->fromClosure($alter);
+            $alter = $this->alter_factory->createFromClosure($alter);
         }
 
         $this->alter = $alter;
