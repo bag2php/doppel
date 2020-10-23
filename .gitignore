@@ -4,6 +4,7 @@
 /cache/
 /composer.lock
 /docs/api/
+/infection.log
 /tools/*.phar
 /tools/*/composer.lock
 /tools/*/vendor/

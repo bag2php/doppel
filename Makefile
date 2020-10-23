@@ -23,6 +23,7 @@
 # License: MIT
 
 PHP ?= php
+PHPDBG ?= phpdbg -qrr
 COMPOSER = tools/composer.phar
 AUTOLOAD_PHP = vendor/autoload.php
 RM = rm -f
@@ -39,6 +40,9 @@ composer.lock: $(COMPOSER) composer.json
 
 $(AUTOLOAD_PHP): composer.lock
 
+tools/.infection/vendor/bin/infection:
+	$(PHP) $(COMPOSER) install -d tools/.infection
+
 tools/.phan/vendor/bin/phan:
 	$(PHP) $(COMPOSER) install -d tools/.phan
 
@@ -54,6 +58,9 @@ tools/.phpstan/vendor/bin/phpstan:
 
 tools/.psalm/vendor/bin/psalm:
 	$(PHP) $(COMPOSER) install -d tools/.psalm
+
+tools/infection: tools/.infection/vendor/bin/infection
+	(cd tools; ln -sf .infection/vendor/bin/infection .)
 
 tools/phan: tools/.phan/vendor/bin/phan
 	(cd tools; ln -sf .phan/vendor/bin/phan .)
@@ -83,6 +90,7 @@ composer-no-dev:
 
 clobber: clean
 	-$(RM) tools/*.phar tools/phan tools/php-cs-fixer tools/phpstan tools/psalm
+	-$(RM) -r tools/.infection/composer.lock tools/.infection/vendor
 	-$(RM) -r tools/.phan/composer.lock tools/.phan/vendor
 	-$(RM) -r tools/.php-cs-fixer/composer.lock tools/.php-cs-fixer/vendor
 	-$(RM) -r tools/.phpdocumentor/phpDocumentor.phar
@@ -94,11 +102,15 @@ clobber: clean
 clean:
 	-$(RM) -r build
 	-$(RM) .php_cs.cache
+	-$(RM) infection.log
 
 doc: phpdoc
 
 fix: tools/php-cs-fixer
 	$(PHP) tools/php-cs-fixer fix
+
+infection: tools/infection
+	-$(PHPDBG) tools/infection
 
 phan: tools/phan
 	-$(PHP) tools/phan
