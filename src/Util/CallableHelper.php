@@ -23,7 +23,7 @@ trait CallableHelper
      *
      * @return array{0:?string,1:string}
      */
-    protected static function extractClassMethod(callable $callback): array
+    private static function extractClassMethod(callable $callback): array
     {
         if (is_array($callback)) {
             [$class_name, $method_name] = $callback;
@@ -43,7 +43,7 @@ trait CallableHelper
     /**
      * Generate a new function name for method stashing that includes backslash(\\) and null(\0)
      */
-    protected static function stashMethodName(string $class_name, string $func_name): string
+    private static function stashMethodName(string $class_name, string $func_name): string
     {
         return __TRAIT__ . "\0{$class_name}\0{$func_name}\0";
     }
