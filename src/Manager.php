@@ -15,7 +15,7 @@ use OutOfBoundsException;
 /**
  * Manager and Factory class of TestDouble
  *
- * @implements ArrayAccess<string,Doppel>
+ * @implements ArrayAccess<string,MethodCallDoppel>
  *
  * @author USAMI Kenta <tadsan@zonu.me>
  * @copyright 2020 Baguette HQ
@@ -31,7 +31,7 @@ class Manager implements ArrayAccess
     /** @var Replacer */
     private $replacer;
 
-    /** @var array<string,array<string,Doppel>> */
+    /** @var array<string,array<string,MethodCallDoppel>> */
     private $doppels = [];
 
     public function __construct(Replacer $replacer)
@@ -49,7 +49,7 @@ class Manager implements ArrayAccess
      *
      * @param array{backtrace?: array{line:int, file:string}, enabled_record?:bool} $options
      */
-    public function add(callable $method, array $options = []): Doppel
+    public function add(callable $method, array $options = []): MethodCallDoppel
     {
         if (!isset($options['backtrace'])) {
             /** @var array{line:int, file:string} */
@@ -58,7 +58,7 @@ class Manager implements ArrayAccess
         }
 
         [$class_name, $method_name] = $class_method = static::extractClassMethod($method);
-        $test_double = Doppel::fromClassMethod($class_method, $this->replacer, $options);
+        $test_double = MethodCallDoppel::fromClassMethod($class_method, $this->replacer, $options);
 
         if (isset($this->doppels[$class_name ?? ''][$method_name])) {
             $name = ($class_name === null) ? $method_name : "{$class_name}::{$method_name}";
@@ -71,9 +71,9 @@ class Manager implements ArrayAccess
     }
 
     /**
-     * @return Generator<Doppel>
+     * @return Generator<MethodCallDoppel>
      */
-    public function getDoppels(): Generator
+    public function getMethodCallDoppels(): Generator
     {
         foreach ($this->doppels as $class => $methods) {
             foreach ($methods as $method => $test_double) {
@@ -87,7 +87,7 @@ class Manager implements ArrayAccess
      */
     public function finalize(): void
     {
-        foreach ($this->getDoppels() as $test_double) {
+        foreach ($this->getMethodCallDoppels() as $test_double) {
             $this->replacer->restore(...$test_double->asClassMethod());
         }
 
@@ -107,7 +107,7 @@ class Manager implements ArrayAccess
 
     /**
      * @param callable $offset
-     * @return Doppel
+     * @return MethodCallDoppel
      */
     public function offsetGet($offset)
     {
@@ -122,7 +122,7 @@ class Manager implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        throw new OutOfBoundsException('Do not add doppel by assign/offsetSet().');
+        throw new OutOfBoundsException('Do not add MethodCallDoppel by assign/offsetSet().');
     }
 
     /**
@@ -131,6 +131,6 @@ class Manager implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        throw new OutOfBoundsException('Do not remove doppel by unset.');
+        throw new OutOfBoundsException('Do not remove MethodCallDoppel by unset.');
     }
 }

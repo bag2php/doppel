@@ -10,13 +10,13 @@ use Closure;
 use LogicException;
 
 /**
- * A TestDouble class
+ * Doppel of calling a method/function, not mock.
  *
  * @author USAMI Kenta <tadsan@zonu.me>
  * @copyright 2020 Baguette HQ
  * @license https://www.mozilla.org/en-US/MPL/2.0/ MPL-2.0
  */
-class Doppel
+class MethodCallDoppel
 {
     /** @var Alter */
     private $alter;
@@ -177,7 +177,7 @@ class Doppel
      */
     public function will($alter)
     {
-        if ($this->alter !== null) {
+        if (isset($this->alter)) {
             throw new LogicException('Already set Alter.  will() cannot be set multiple times.');
         }
 
