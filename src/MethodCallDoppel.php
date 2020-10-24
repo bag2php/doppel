@@ -27,7 +27,10 @@ class MethodCallDoppel
     /** @var ?array{line:int, file:string} */
     private $backtrace;
 
-    /** @var int */
+    /**
+     * @var int
+     * @phpstan-var 0|positive-int
+     */
     private $called_count = 0;
 
     /** @var ?string */
@@ -39,13 +42,19 @@ class MethodCallDoppel
     /** @var bool */
     private $enable_throw_on_runtime;
 
-    /** @var ?int */
+    /**
+     * @var ?int
+     * @phpstan-var null|0|positive-int
+     */
     private $expected_called_count;
 
     /** @var string */
     private $method_name;
 
-    /** @var array<int,array<int,mixed>> */
+    /**
+     * @var array<int,array<int,mixed>>
+     * @psalm-var list<int,list<int,mixed>>
+     */
     private $received_args = [];
 
     /**
@@ -151,10 +160,12 @@ class MethodCallDoppel
     }
 
     /**
+     * @phpstan-param 0|positive-int $n
      * @return $this
      */
     public function times(int $n)
     {
+        /* @phpstan-ignore-next-line */
         assert($n >= 0);
         $this->expected_called_count = $n;
 
