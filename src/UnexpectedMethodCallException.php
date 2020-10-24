@@ -18,6 +18,10 @@ class UnexpectedMethodCallException extends Exception
 {
     use NumberHelper;
 
+    /**
+     * @phpstan-param 0|positive-int $expected_called_count
+     * @phpstan-param positive-int $called_count
+     */
     public static function generateMessageForCalledCount(
         string $func_name,
         int $expected_called_count,
