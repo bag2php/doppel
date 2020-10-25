@@ -25,15 +25,21 @@ class UnexpectedMethodCallException extends Exception
     public static function generateMessageForCalledCount(
         string $func_name,
         int $expected_called_count,
-        int $called_count
+        int $called_count,
+        bool $finalized
     ): string {
         if ($expected_called_count === 0) {
             return "{$func_name}() is expected to never be called";
         }
 
-        $nth = static::ordinal($called_count);
+        if ($finalized) {
+            $times = "{$called_count} times";
+        } else {
+            $nth = static::ordinal($called_count);
+            $times = "the {$nth} time";
+        }
 
         return "{$func_name}() is expected to be called {$expected_called_count} times,"
-            . " but it was called the {$nth} time.";
+            . " but it was called {$times}.";
     }
 }

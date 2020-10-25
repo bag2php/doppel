@@ -6,7 +6,9 @@ namespace Bag2\Doppel;
 
 use Bag2\Doppel\Alter;
 use Bag2\Doppel\Alter\AlterFactory;
+use Bag2\Doppel\Receptor\CallCountReceptor;
 use Closure;
+use Exception;
 use LogicException;
 
 /**
@@ -27,29 +29,22 @@ class MethodCallDoppel
     /** @var ?array{line:int, file:string} */
     private $backtrace;
 
-    /**
-     * @var int
-     * @phpstan-var 0|positive-int
-     */
-    private $called_count = 0;
-
     /** @var ?string */
     private $class_name;
 
     /** @var bool */
     private $enable_record;
 
-    /** @var bool */
-    private $enable_throw_on_runtime;
-
-    /**
-     * @var ?int
-     * @phpstan-var null|0|positive-int
-     */
-    private $expected_called_count;
-
     /** @var string */
     private $method_name;
+
+    /**
+     * @var array<string,?Receptor>
+     * @phpstan-var array<class-string<Receptor>,?Receptor>
+     */
+    private $receptors = [
+        CallCountReceptor::class => null,
+    ];
 
     /**
      * @var array<int,array<int,mixed>>
@@ -57,8 +52,11 @@ class MethodCallDoppel
      */
     private $received_args = [];
 
+    /** @var bool */
+    private $throw_on_runtime;
+
     /**
-     * @param array{alter_factory?:AlterFactory, backtrace?: array{line:int, file:string}, enable_record?:bool} $options
+     * @param array{alter_factory?:AlterFactory, backtrace?: array{line:int, file:string}, enable_record?:bool, throw_on_runtime?:bool} $options
      */
     final private function __construct(?string $class_name, string $method_name, Replacer $replacer, array $options)
     {
@@ -66,8 +64,8 @@ class MethodCallDoppel
         $this->method_name = $method_name;
         $this->alter_factory = $options['alter_factory'] ?? new Alter\DefaultFactory;
         $this->backtrace = $options['backtrace'] ?? null;
-        $this->enable_throw_on_runtime = $options['enable_throw_on_runtime'] ?? true;
         $this->enable_record = $options['enable_record'] ?? true;
+        $this->throw_on_runtime = $options['throw_on_runtime'] ?? true;
 
         $test_double = $this;
 
@@ -113,34 +111,33 @@ class MethodCallDoppel
     }
 
     /**
-     * @param array<mixed> $args
+     * @phpstan-param 0|positive-int $expected_called_count
+     */
+    public function createCallCountReceptor(
+        string $func_name,
+        int $expected_called_count
+    ): CallCountReceptor {
+        return new CallCountReceptor($func_name, $expected_called_count);
+    }
+
+    /**
+     * @param array<mixed> $arguments
      * @return mixed
      */
-    public function invokeImplementation(array $args)
+    public function invokeImplementation(array $arguments)
     {
-        $this->called_count++;
         if ($this->enable_record) {
-            $this->received_args[] = $args;
+            $this->received_args[] = $arguments;
         }
 
-        if (isset($this->expected_called_count) &&
-            $this->enable_throw_on_runtime &&
-            $this->expected_called_count < $this->called_count
-        ) {
-            $func_name = $this->class_name === null
-                ? $this->method_name
-                : "{$this->class_name}::{$this->method_name}";
+        $rejected = $this->passArgumentsToAcceptors($arguments);
 
-            throw new UnexpectedMethodCallException(
-                UnexpectedMethodCallException::generateMessageForCalledCount(
-                    $func_name,
-                    $this->expected_called_count,
-                    $this->called_count
-                )
-            );
+        if ($this->throw_on_runtime && $rejected !== null) {
+
+            throw $rejected;
         }
 
-        return $this->alter->invoke($args);
+        return $this->alter->invoke($arguments);
     }
 
     /**
@@ -160,14 +157,37 @@ class MethodCallDoppel
     }
 
     /**
-     * @phpstan-param 0|positive-int $n
+     * @param array<mixed> $arguments
+     */
+    protected function passArgumentsToAcceptors(array $arguments): ?Exception
+    {
+        foreach ($this->receptors as $receptor) {
+            if ($receptor === null) {
+                continue;
+            }
+
+            if (!$receptor->call($arguments)) {
+                return $receptor->rejected();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @phpstan-param 0|positive-int $expected_called_count
      * @return $this
      */
-    public function times(int $n)
+    public function times(int $expected_called_count)
     {
-        /* @phpstan-ignore-next-line */
-        assert($n >= 0);
-        $this->expected_called_count = $n;
+        $func_name = $this->class_name === null
+            ? $this->method_name
+            : "{$this->class_name}::{$this->method_name}";
+
+        $this->receptors[CallCountReceptor::class] = $this->createCallCountReceptor(
+            $func_name,
+            $expected_called_count
+        );
 
         return $this;
     }
