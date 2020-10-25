@@ -48,4 +48,21 @@ final class CallCountReceptorTest extends TestCase
             $e3->getMessage()
         );
     }
+
+    public function test_expect_never_called(): void
+    {
+        $subject = new CallCountReceptor('func', 0);
+
+        $this->assertNull($subject->rejected());
+        $this->assertNull($subject->rejected(true));
+
+        $this->assertFalse($subject->call([]));
+
+        $e1 = $subject->rejected(true);
+        $this->assertInstanceOf(UnexpectedMethodCallException::class, $e1);
+        $this->assertSame(
+            'func() is expected to never be called, but it was 1 times called.',
+            $e1->getMessage()
+        );
+    }
 }

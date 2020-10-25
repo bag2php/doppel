@@ -29,7 +29,11 @@ class UnexpectedMethodCallException extends Exception
         bool $finalized
     ): string {
         if ($expected_called_count === 0) {
-            return "{$func_name}() is expected to never be called";
+            $suffix = $finalized
+                ? ", but it was {$called_count} times called"
+                : '';
+
+            return "{$func_name}() is expected to never be called{$suffix}.";
         }
 
         if ($finalized) {
