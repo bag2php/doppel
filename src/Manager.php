@@ -34,7 +34,7 @@ class Manager implements ArrayAccess
     /** @var array<string,array<string,MethodCallDoppel>> */
     private $doppels = [];
 
-    public function __construct(Replacer $replacer)
+    final public function __construct(Replacer $replacer)
     {
         $this->replacer = $replacer;
     }

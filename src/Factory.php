@@ -32,9 +32,18 @@ class Factory
             new ReplacerFactory(static::REPLACER_CANDIDATES);
     }
 
-    public function create(): Manager
+    /**
+     * Create new instance of Manager class
+     *
+     * If you want to extend Manager, pass YourCustomizedManager::class value.
+     *
+     * @phpstan-template T of Manager
+     * @phpstan-param class-string<T> $manager_class
+     * @phpstan-return T
+     */
+    public function create(string $manager_class = Manager::class): Manager
     {
-        return new Manager(
+        return new $manager_class(
             $this->replacer_factory->create()
         );
     }
