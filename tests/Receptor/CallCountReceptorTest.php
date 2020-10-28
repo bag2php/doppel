@@ -59,7 +59,7 @@ final class CallCountReceptorTest extends TestCase
         $this->assertFalse($subject->call([]));
 
         $e1 = $subject->rejected(true);
-        $this->assertInstanceOf(UnexpectedMethodCallException::class, $e1);
+        $this->assertInstanceOf(UnexpectedMethodCallException::class, $e1); // @phpstan-ignore-line
         $this->assertSame(
             'func() is expected to never be called, but it was 1 times called.',
             $e1->getMessage()
