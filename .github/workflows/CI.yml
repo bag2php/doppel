@@ -22,7 +22,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         tools: pecl
-        extensions: intl, mbstring, uopz, runkit7
+        extensions: ast, intl, mbstring, uopz, runkit7
 
     - name: Setup Composer
       run: 'make composer'
