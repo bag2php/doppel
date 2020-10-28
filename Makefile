@@ -41,23 +41,23 @@ composer.lock: $(COMPOSER) composer.json
 $(AUTOLOAD_PHP): composer.lock
 
 tools/.infection/vendor/bin/infection:
-	$(PHP) $(COMPOSER) install -d tools/.infection
+	$(PHP) $(COMPOSER) install --no-progress -d tools/.infection
 
 tools/.phan/vendor/bin/phan:
-	$(PHP) $(COMPOSER) install -d tools/.phan
+	$(PHP) $(COMPOSER) install --no-progress -d tools/.phan
 
 tools/.php-cs-fixer/vendor/bin/php-cs-fixer:
-	$(PHP) $(COMPOSER) install -d tools/.php-cs-fixer
+	$(PHP) $(COMPOSER) install --no-progress -d tools/.php-cs-fixer
 
 tools/.phpDocumentor.phar:
 	$(PHP) -r "copy('$(PHPDOCUMENTOR_PHAR_URL)', 'tools/.phpDocumentor.phar');"
 	+chmod +x tools/.phpDocumentor.phar
 
 tools/.phpstan/vendor/bin/phpstan:
-	$(PHP) $(COMPOSER) install -d tools/.phpstan
+	$(PHP) $(COMPOSER) install --no-progress -d tools/.phpstan
 
 tools/.psalm/vendor/bin/psalm:
-	$(PHP) $(COMPOSER) install -d tools/.psalm
+	$(PHP) $(COMPOSER) install --no-progress -d tools/.psalm
 
 tools/infection: tools/.infection/vendor/bin/infection
 	(cd tools; ln -sf .infection/vendor/bin/infection .)
@@ -77,11 +77,15 @@ tools/phpstan: tools/.phpstan/vendor/bin/phpstan
 tools/psalm: tools/.psalm/vendor/bin/psalm
 	(cd tools; ln -sf .psalm/vendor/bin/psalm .)
 
-.PHONY: analyse analyse-no-dev check composer composer-no-dev clean clobber doc fix phan phpdoc phpstan-no-dev phpstan psalm setup setup-tools test
+.PHONY: analyse analyse-no-dev check composer composer-no-dev clean clobber doc fix phan \
+phan-strict phpdoc phpstan-no-dev phpstan psalm psalm-strict setup setup-tools test
 
 analyse-no-dev: phan phpstan-no-dev psalm-no-dev
+analyse-strict: phan-strict phpstan-strict psalm-strict
 analyse: phan phpstan psalm
 check: composer test analyse
+
+check-strict: composer test infection analyse-strict
 
 composer: $(AUTOLOAD_PHP)
 
@@ -110,25 +114,33 @@ fix: tools/php-cs-fixer
 	$(PHP) tools/php-cs-fixer fix
 
 infection: tools/infection
-	-$(PHPDBG) tools/infection
+	$(PHPDBG) tools/infection
 
 phan: tools/phan
-	-$(PHP) tools/phan
+	$(PHP) tools/phan --analyze-twice --no-progress-bar 2>/dev/null
+	@echo
+
+phan-strict: tools/phan
+	$(PHP) tools/phan --analyze-twice --no-progress-bar -tux 2>/dev/null
+	@echo
 
 phpdoc: tools/phpdoc
 	APP_ENV=$(APP_ENV) $(PHP) tools/phpdoc
 
 phpstan-no-dev: tools/phpstan
-	-$(PHP) tools/phpstan analyse src/ --no-progress
+	$(PHP) tools/phpstan analyse --no-progress src/
 
 phpstan: tools/phpstan
-	-$(PHP) tools/phpstan analyse --no-progress
+	$(PHP) tools/phpstan analyse --no-progress
 
 psalm-no-dev: tools/psalm
-	-$(PHP) tools/psalm src/
+	$(PHP) tools/psalm --no-progress src/
 
 psalm: tools/psalm
-	-$(PHP) tools/psalm
+	$(PHP) tools/psalm --no-progress
+
+psalm-strict: tools/psalm
+	$(PHP) tools/psalm --no-progress --show-info=true
 
 setup: $(COMPOSER)
 
@@ -138,3 +150,4 @@ setup-tools: setup tools/php-cs-fixer tools/phan tools/phpstan tools/psalm
 
 test: vendor/bin/phpunit
 	$(PHP) vendor/bin/phpunit
+	@echo
