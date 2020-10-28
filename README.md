@@ -1,5 +1,7 @@
 # Bag2\Doppel
 
+[![Build Status](https://github.com/bag2php/doppel/workflows/CI/badge.svg)](https://github.com/bag2php/doppel/actions)
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/bag2php/doppel/master)](https://infection.github.io)
 
 **Doppel** is a PHP mocking framework for static methods.
 
