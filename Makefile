@@ -82,7 +82,7 @@ phan-strict phpdoc phpstan-no-dev phpstan psalm psalm-strict setup setup-tools t
 
 analyse-no-dev: phan phpstan-no-dev psalm-no-dev
 analyse-strict: phan-strict phpstan-strict psalm-strict
-analyse: phan phpstan psalm
+analyse: phan phpstan-use-baseline psalm
 check: composer test analyse
 
 check-strict: composer test infection analyse-strict
@@ -129,6 +129,9 @@ phpdoc: tools/phpdoc
 
 phpstan-no-dev: tools/phpstan
 	$(PHP) tools/phpstan analyse --no-progress src/
+
+phpstan-use-baseline: tools/phpstan
+	$(PHP) tools/phpstan analyse --no-progress -c phpstan-baseline.neon.dist
 
 phpstan: tools/phpstan
 	$(PHP) tools/phpstan analyse --no-progress
