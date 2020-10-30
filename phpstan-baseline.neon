@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Return type \\(Bag2\\\\Doppel\\\\Alter\\\\ReturnValueAlter\\<T\\>\\) of method Bag2\\\\Doppel\\\\Alter\\\\DefaultFactory\\:\\:createFromFixedReturnValue\\(\\) should be compatible with return type \\(Bag2\\\\Doppel\\\\Alter\\\\ReturnValueAlter\\<T\\>\\) of method Bag2\\\\Doppel\\\\Alter\\\\AlterFactory\\:\\:createFromFixedReturnValue\\(\\)$#"
+			count: 1
+			path: src/Alter/DefaultFactory.php
+
