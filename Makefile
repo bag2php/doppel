@@ -24,7 +24,7 @@
 
 PHP ?= php
 PHPDBG ?= phpdbg -qrr
-COMPOSER = tools/composer.phar
+COMPOSER = composer
 AUTOLOAD_PHP = vendor/autoload.php
 RM = rm -f
 APP_ENV =
@@ -32,32 +32,29 @@ PHPDOCUMENTOR_PHAR_URL = https://github.com/phpDocumentor/phpDocumentor/releases
 
 .DEFAULT_GOAL := check
 
-$(COMPOSER):
-	tools/setup-composer
-
 composer.lock: $(COMPOSER) composer.json
-	$(PHP) $(COMPOSER) install --no-progress
+	$(COMPOSER) install --no-progress
 
 $(AUTOLOAD_PHP): composer.lock
 
 tools/.infection/vendor/bin/infection:
-	$(PHP) $(COMPOSER) install --no-progress -d tools/.infection
+	$(COMPOSER) install --no-progress -d tools/.infection
 
 tools/.phan/vendor/bin/phan:
-	$(PHP) $(COMPOSER) install --no-progress -d tools/.phan
+	$(COMPOSER) install --no-progress -d tools/.phan
 
 tools/.php-cs-fixer/vendor/bin/php-cs-fixer:
-	$(PHP) $(COMPOSER) install --no-progress -d tools/.php-cs-fixer
+	$(COMPOSER) install --no-progress -d tools/.php-cs-fixer
 
 tools/.phpDocumentor.phar:
 	$(PHP) -r "copy('$(PHPDOCUMENTOR_PHAR_URL)', 'tools/.phpDocumentor.phar');"
 	+chmod +x tools/.phpDocumentor.phar
 
 tools/.phpstan/vendor/bin/phpstan:
-	$(PHP) $(COMPOSER) install --no-progress -d tools/.phpstan
+	$(COMPOSER) install --no-progress -d tools/.phpstan
 
 tools/.psalm/vendor/bin/psalm:
-	$(PHP) $(COMPOSER) install --no-progress -d tools/.psalm
+	$(COMPOSER) install --no-progress -d tools/.psalm
 
 tools/infection: tools/.infection/vendor/bin/infection
 	(cd tools; ln -sf .infection/vendor/bin/infection .)
@@ -90,7 +87,7 @@ check-strict: composer test infection analyse-strict
 composer: $(AUTOLOAD_PHP)
 
 composer-no-dev:
-	$(PHP) $(COMPOSER) install --no-dev --optimize-autoloader --no-progress
+	$(COMPOSER) install --no-dev --optimize-autoloader --no-progress
 
 clobber: clean
 	-$(RM) tools/*.phar tools/phan tools/php-cs-fixer tools/phpstan tools/psalm
