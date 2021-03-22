@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel\Alter;
 
-use Bag2\Doppel\Alter\DefaultFactory;
 use Bag2\Doppel\TestCase;
 
 final class DefaultFactoryTest extends TestCase
@@ -14,7 +13,7 @@ final class DefaultFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->subject = new DefaultFactory;
+        $this->subject = new DefaultFactory();
     }
 
     public function test_createFromClosure(): void

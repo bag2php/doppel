@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Bag2\Doppel\Alter;
 
 use Bag2\Doppel\Alter;
-use function call_user_func_array;
 use Closure;
+use function call_user_func_array;
 
 class ClosureAlter implements Alter
 {

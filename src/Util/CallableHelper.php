@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel\Util;
 
+use LogicException;
 use function explode;
 use function is_array;
 use function is_string;
-use LogicException;
 
 /**
  * Utility methods trait for callable manipulation

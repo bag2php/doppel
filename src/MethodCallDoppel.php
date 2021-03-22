@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel;
 
-use Bag2\Doppel\Alter;
 use Bag2\Doppel\Alter\AlterFactory;
 use Bag2\Doppel\Receptor\CallCountReceptor;
 use Closure;
@@ -62,7 +61,7 @@ class MethodCallDoppel
     {
         $this->class_name = $class_name;
         $this->method_name = $method_name;
-        $this->alter_factory = $options['alter_factory'] ?? new Alter\DefaultFactory;
+        $this->alter_factory = $options['alter_factory'] ?? new Alter\DefaultFactory();
         $this->backtrace = $options['backtrace'] ?? null;
         $this->enable_record = $options['enable_record'] ?? true;
         $this->throw_on_runtime = $options['throw_on_runtime'] ?? true;
@@ -133,7 +132,6 @@ class MethodCallDoppel
         $rejected = $this->passArgumentsToAcceptors($arguments);
 
         if ($this->throw_on_runtime && $rejected !== null) {
-
             throw $rejected;
         }
 

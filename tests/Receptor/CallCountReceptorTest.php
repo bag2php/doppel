@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel\Receptor;
 
-use Bag2\Doppel\UnexpectedMethodCallException;
 use Bag2\Doppel\TestCase;
+use Bag2\Doppel\UnexpectedMethodCallException;
 
 final class CallCountReceptorTest extends TestCase
 {

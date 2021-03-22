@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel\Replacer;
 
-use function array_pop;
 use Bag2\Doppel\Replacer;
-use function implode;
 use LogicException;
+use function array_pop;
+use function implode;
 
 /**
  * A factory class of function replacer
@@ -31,7 +31,7 @@ final class ReplacerFactory
 
     public function create(): Replacer
     {
-        return new $this->class;
+        return new $this->class();
     }
 
     /**
