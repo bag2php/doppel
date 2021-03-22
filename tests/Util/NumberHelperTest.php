@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Bag2\Doppel\Util;
 
 use Bag2\Doppel\TestCase;
-use LogicException;
 
 final class NumberTest extends TestCase
 {

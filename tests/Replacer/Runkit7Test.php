@@ -6,7 +6,6 @@ namespace Bag2\Doppel\Replacer;
 
 use Bag2\Doppel\TestCase;
 use Bag2\Doppel\Util\CallableHelper;
-use LogicException;
 
 final class Runkit7Test extends TestCase
 {
@@ -21,7 +20,7 @@ final class Runkit7Test extends TestCase
             $this->markTestSkipped('Runkit7 is not available.');
         }
 
-        $this->subject = new Runkit7;
+        $this->subject = new Runkit7();
     }
 
     /**

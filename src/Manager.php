@@ -6,11 +6,11 @@ namespace Bag2\Doppel;
 
 use ArrayAccess;
 use Bag2\Doppel\Util\CallableHelper;
-use function debug_backtrace;
-use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use Generator;
 use LogicException;
 use OutOfBoundsException;
+use function debug_backtrace;
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
 
 /**
  * Manager and Factory class of TestDouble

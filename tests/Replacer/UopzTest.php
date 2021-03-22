@@ -6,7 +6,6 @@ namespace Bag2\Doppel\Replacer;
 
 use Bag2\Doppel\TestCase;
 use Bag2\Doppel\Util\CallableHelper;
-use LogicException;
 
 /**
  * @runTestsInSeparateProcesses
@@ -24,7 +23,7 @@ final class UopzTest extends TestCase
             $this->markTestSkipped('Uopz is not available.');
         }
 
-        $this->subject = new Uopz;
+        $this->subject = new Uopz();
     }
 
     /**

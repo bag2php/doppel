@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Bag2\Doppel;
 
-use Bag2\Doppel\Alter;
-
 /**
  * The interface that is an alternative to function/method implementation
  *
